@@ -24,9 +24,10 @@ jobs:
       
       # Runs a set of commands using the runners shell
       - name: Build it!
+        shell: cmd
         run: |
-          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\vcvarsall.bat" x64 && msbuild -t:restore -m -p:RestorePackagesConfig=true -p:Configuration=Release src\AppInstallerCLI.sln
-          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\vcvarsall.bat" && msbuild -p:Configuration=Release src\AppInstallerCLI.sln
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\vcvarsall.bat x64" && msbuild -t:restore -m -p:RestorePackagesConfig=true -p:Configuration=Release src\AppInstallerCLI.sln
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\vcvarsall.bat x64" && msbuild -p:Configuration=Release src\AppInstallerCLI.sln
       - name: Post it!
         uses: actions/upload-artifact@v2.3.1
         with:
