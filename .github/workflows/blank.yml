@@ -1,0 +1,38 @@
+# This is a basic workflow to help you get started with Actions
+
+name: build-it
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: windows-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+        with:
+         repository: microsoft/winget-cli
+      
+      # Runs a set of commands using the runners shell
+      - name: Build it!
+        run: |
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\vcvarsall.bat" x64 && msbuild -t:restore -m -p:RestorePackagesConfig=true -p:Configuration=Release src\AppInstallerCLI.sln
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\vcvarsall.bat" && msbuild -p:Configuration=Release src\AppInstallerCLI.sln
+      - name: Post it!
+        uses: actions/upload-artifact@v2.3.1
+        with:
+          name: winget-cli
+          path: src/AppInstallerCLI/*
+          if-no-files-found: error
+        
+        
+          
