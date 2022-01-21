@@ -23,17 +23,22 @@ jobs:
          repository: microsoft/winget-cli
       
       # Runs a set of commands using the runners shell
-      - name: Build it!
+      - name: Restore it!
         shell: cmd
         run: |
           "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 && msbuild -t:restore -m -p:RestorePackagesConfig=true -p:Configuration=Release src\AppInstallerCLI.sln
+      - name: Build it!
+        shell: cmd
+        run: |
           "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 && msbuild -p:Configuration=Release src\AppInstallerCLI.sln
-          COPY src\x64\Release\WindowsPackageManager\WindowsPackageManager.dll src\x64\Release\AppInstallerCLI\WindowsPackageManager.dll
+      - name: Copy that DLL
+        shell: cmd
+        run: COPY src\x64\Release\WindowsPackageManager\WindowsPackageManager.dll src\x64\Release\AppInstallerCLI\WindowsPackageManager.dll
       - name: Post it!
         uses: actions/upload-artifact@v2.3.1
         with:
           name: winget-cli
-          path: src/AppInstallerCLI/*
+          path: src/x64/Release/AppInstallerCLI/*
           if-no-files-found: error
         
         
