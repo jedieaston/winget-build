@@ -38,6 +38,7 @@ jobs:
           Compress-Archive src\x64\Release\AppInstallerCLI\ .\wingetdev.zip
       - name: Delete that old release!
         uses: actions/github-script@v4
+        continue-on-error: true
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
@@ -60,7 +61,7 @@ jobs:
           body: "This is an automated build of [winget](https://github.com/microsoft/winget-cli). Unzip wingetdev.zip, and you'll get it!"
           name: "wingetdev: ${{ env.GITHUB_RUN_NUMBER }}"
           files: wingetdev.zip
-          tag_name: ${{ env.GITHUB_RUN_NUMBER }}
+          tag_name: ${{ github.run_number }}
       
       - name: Post it!
         uses: actions/upload-artifact@v2.3.1
