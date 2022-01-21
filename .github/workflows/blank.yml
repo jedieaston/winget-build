@@ -60,7 +60,7 @@ jobs:
       - name: Create that new release!
         uses: softprops/action-gh-release@v1
         with:
-          body_file: release.txt
+          body_path: release.txt
           name: "wingetdev: ${{ github.run_number }}"
           files: wingetdev.zip
           tag_name: ${{ github.run_number }}
