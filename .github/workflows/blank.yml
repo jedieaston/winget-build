@@ -31,9 +31,26 @@ jobs:
         shell: cmd
         run: |
           "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 && msbuild -p:Configuration=Release src\AppInstallerCLI.sln
-      - name: Copy that DLL
-        shell: cmd
-        run: COPY src\x64\Release\WindowsPackageManager\WindowsPackageManager.dll src\x64\Release\AppInstallerCLI\WindowsPackageManager.dll
+      - name: Make that archive!
+        run: |
+          cp src\x64\Release\WindowsPackageManager\WindowsPackageManager.dll src\x64\Release\AppInstallerCLI\WindowsPackageManager.dll
+          mv src\x64\Release\AppInstallerCLI\winget.exe src\x64\Release\AppInstallerCLI\wingetdev.exe
+          Compress-Archive src\x64\Release\AppInstallerCLI\ .\wingetdev.zip
+      - name: Delete that old release!
+        uses: actions/github-script@v4
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            const { owner, repo } = context.repo
+            const { data: { id } } = await github.repos.getLatestRelease({ owner, repo })
+            await github.repos.deleteRelease({ owner, repo, release_id: id })
+
+      - name: Create that new release!
+        uses: softprops/action-gh-release@v1
+        with:
+          body: "This is an automated build of [winget](https://github.com/microsoft/winget-cli). Unzip wingetdev.zip, and you'll get it!"
+          name: "wingetdev: ${{ env.GITHUB_RUN_NUMBER }}"
+          files: wingetdev.zip
       - name: Post it!
         uses: actions/upload-artifact@v2.3.1
         with:
