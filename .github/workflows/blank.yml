@@ -30,7 +30,7 @@ jobs:
       - name: Build it!
         shell: cmd
         run: |
-          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 && msbuild -p:Configuration=Release src\AppInstallerCLI.sln
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 && msbuild -m -p:Configuration=Release src\AppInstallerCLI.sln
       - name: Make that archive!
         run: |
           cp src\x64\Release\WindowsPackageManager\WindowsPackageManager.dll src\x64\Release\AppInstallerCLI\WindowsPackageManager.dll
