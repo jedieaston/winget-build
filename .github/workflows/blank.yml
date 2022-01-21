@@ -24,7 +24,7 @@ jobs:
         with:
          repository: microsoft/winget-cli
       - name: Write a release note!
-        run: \"This is a automated build of winget, from commit [$(git rev-parse HEAD)](https://github.com/microsoft/winget-cli/blob/$(git rev-parse HEAD)). Unzip wingetdev.zip to use it!\" > release.txt
+        run: '"This is a automated build of winget, from commit [$(git rev-parse HEAD)](https://github.com/microsoft/winget-cli/blob/$(git rev-parse HEAD)). Unzip wingetdev.zip to use it!" > release.txt'
       - name: Restore it!
         shell: cmd
         run: |
