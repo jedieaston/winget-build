@@ -1,6 +1,6 @@
 # winget-build
 
-[![build-it](https://github.com/jedieaston/winget-build/actions/workflows/blank.yml/badge.svg)](https://github.com/jedieaston/winget-build/actions/workflows/blank.yml)
+[![build-it](https://github.com/jedieaston/winget-build/actions/workflows/build.yml/badge.svg)](https://github.com/jedieaston/winget-build/actions/workflows/build.yml)
 
 Fresh, nightly builds of winget.
 
