@@ -44,13 +44,24 @@ jobs:
             const { owner, repo } = context.repo
             const { data: { id } } = await github.repos.getLatestRelease({ owner, repo })
             await github.repos.deleteRelease({ owner, repo, release_id: id })
-
+      - name: Create tag!
+        uses: actions/github-script@v5
+        with:
+          script: |
+            github.rest.git.createRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: 'refs/tags/${{ env.GITHUB_RUN_NUMBER }}',
+              sha: context.sha
+            })
       - name: Create that new release!
         uses: softprops/action-gh-release@v1
         with:
           body: "This is an automated build of [winget](https://github.com/microsoft/winget-cli). Unzip wingetdev.zip, and you'll get it!"
           name: "wingetdev: ${{ env.GITHUB_RUN_NUMBER }}"
           files: wingetdev.zip
+          tag_name: ${{ env.GITHUB_RUN_NUMBER }}
+      
       - name: Post it!
         uses: actions/upload-artifact@v2.3.1
         with:
