@@ -20,7 +20,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
          repository: microsoft/winget-cli
       - name: Write a release note!
@@ -39,16 +39,16 @@ jobs:
           mv src\x64\Release\AppInstallerCLI\winget.exe src\x64\Release\AppInstallerCLI\wingetdev.exe
           Compress-Archive src\x64\Release\AppInstallerCLI\ .\wingetdev.zip
       - name: Delete that old release!
-        uses: actions/github-script@v4
+        uses: actions/github-script@v6
         continue-on-error: true
         with:
           github-token: ${{secrets.GITHUB_TOKEN}}
           script: |
             const { owner, repo } = context.repo
-            const { data: { id } } = await github.repos.getLatestRelease({ owner, repo })
-            await github.repos.deleteRelease({ owner, repo, release_id: id })
+            const { data: { id } } = await github.rest.repos.getLatestRelease({ owner, repo })
+            await github.rest.repos.deleteRelease({ owner, repo, release_id: id })
       - name: Create tag!
-        uses: actions/github-script@v5
+        uses: actions/github-script@v6
         continue-on-error: true
         with:
           script: |
@@ -67,7 +67,7 @@ jobs:
           tag_name: ${{ github.run_number }}
       
       - name: Post it!
-        uses: actions/upload-artifact@v2.3.1
+        uses: actions/upload-artifact@v3
         with:
           name: winget-cli
           path: src/x64/Release/AppInstallerCLI/*
