@@ -26,9 +26,7 @@ jobs:
       - name: Enable Vcpkg Install
         shell: cmd
         run: |
-            "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
-            $(VCPKG_INSTALLATION_ROOT)\vcpkg.exe integrate install
-            workingDirectory: '$(VCPKG_INSTALLATION_ROOT)'
+            "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64 && cd %VCPKG_INSTALLATION_ROOT% && vcpkg.exe integrate install
       - name: Write a release note!
         run: '"This is a automated build of winget, from commit [$(git rev-parse HEAD)](https://github.com/microsoft/winget-cli/tree/$(git rev-parse HEAD)). Unzip wingetdev.zip to use it!" > release.txt'
       - name: Restore it!
